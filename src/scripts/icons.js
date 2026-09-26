@@ -1,11 +1,11 @@
 import * as $ from "./utils.js";
-import * as nav from "./nav.js";
+import * as dock from "./dock.js";
 import * as windows from "./windows.js";
 
 const icon = (app) => {
     const iconContent = `
         <div class="icon-area">
-           <img src="./src/images/nav/${app.id}.svg" alt="${app.name}" class="icon-img">
+           <img src="./src/images/icons/${app.id}.svg" alt="${app.name}" class="icon-img">
         </div>`;
     const icon = $.createElement({
         tag: "button",
@@ -19,11 +19,11 @@ const icon = (app) => {
 };
 
 export function create(app) {
-    nav.base.appendChild(icon(app));
+    dock.base.appendChild(icon(app));
 };
 
 export function remove(name) {
-    const appList = nav.base.querySelectorAll('.icon');
+    const appList = dock.base.querySelectorAll('.icon');
     appList.forEach(el => {
         if (el.id !== name) {
             return

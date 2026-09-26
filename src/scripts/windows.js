@@ -1,5 +1,5 @@
 import * as $ from "./utils.js";
-import * as nav from "./nav.js";
+import * as dock from "./dock.js";
 import { templates } from "./templates.js";
 
 let newX = 0, newY = 0, startX = 0, startY = 0;
@@ -52,6 +52,14 @@ const pos = {
     }
 };
 
+let z = {
+    index: 0,
+    setup: function (window = this) {
+        z.index += 1;
+        window.style.zIndex = z.index;
+    },
+};
+
 const window = (app) => {
     const windowContent = `
         <div class="window__head">
@@ -82,6 +90,9 @@ const window = (app) => {
     $.setEventListener($.selectElement(window, ".window__control_btn-max"), "click", ()=>{ max(window) });
 
     $.setEventListener($.selectElement(window, ".window__head"), "mousedown", down);
+
+    $.setEventListener(window, "pointerdown", ()=>{ z.setup(window) });
+    z.setup(window);
 
     return window
 }
@@ -135,7 +146,7 @@ function close(window) {
 
     setTimeout(()=>{ window.remove() }, 250);
 
-    nav.seek();
+    dock.seek();
 }
 
 function min(window) {
@@ -144,7 +155,7 @@ function min(window) {
 
     setTimeout(() => { window.className = "window" }, 250)
 
-    nav.seek()
+    dock.seek()
 }
 
 function max(window) {
@@ -155,12 +166,10 @@ function max(window) {
 
     setTimeout(() => { window.classList.remove("window-maximizing") }, 250)
 
-    nav.hide()
+    dock.hide()
 }
 
 function test(app) {
     open(app);
     console.log(window(app))
 };
-
-test(templates.youtube);
